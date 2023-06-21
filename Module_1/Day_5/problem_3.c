@@ -1,38 +1,47 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-unsigned long compute_total_seconds(const char* time_string) {
-  char* token;
-  char* remainder;
-  unsigned long hours, minutes, seconds;
+struct Time {
+    int hours;
+    int minutes;
+    int seconds;
+};
 
-  char* time_copy = strdup(time_string);  
-  token = strtok(time_copy, ":");
-  hours = strtoul(token, &remainder, 10);
-
-  token = strtok(NULL, ":");
-  minutes = strtoul(token, &remainder, 10);
-
-  token = strtok(NULL, ":");
-  seconds = strtoul(token, &remainder, 10);
-
-  free(time_copy);  
-
-  unsigned long total_seconds = hours * 3600 + minutes * 60 + seconds;
-  return total_seconds;
-}
+struct Time getTimeDifference(struct Time t1, struct Time t2);
 
 int main() {
-  const char* time_string1 = "10:12:50";
-  unsigned long total_seconds1 = compute_total_seconds(time_string1);
-  printf("Time String: %s\n", time_string1);
-  printf("Total Seconds: %lu\n", total_seconds1);
+    struct Time startTime, endTime, difference;
 
-  const char* time_string2 = "13:10:40";
-  unsigned long total_seconds2 = compute_total_seconds(time_string2);
-  printf("Time String: %s\n", time_string2);
-  printf("Total Seconds: %lu\n", total_seconds2);
+    // Input start time
+    printf("Enter start time (hh:mm:ss): ");
+    scanf("%d:%d:%d", &startTime.hours, &startTime.minutes, &startTime.seconds);
 
-  return 0;
+    // Input end time
+    printf("Enter end time (hh:mm:ss): ");
+    scanf("%d:%d:%d", &endTime.hours, &endTime.minutes, &endTime.seconds);
+
+    // Calculate difference
+    difference = getTimeDifference(startTime, endTime);
+
+    // Display the difference
+    printf("Time difference: %02d:%02d:%02d\n", difference.hours, difference.minutes, difference.seconds);
+
+    return 0;
+}
+
+struct Time getTimeDifference(struct Time t1, struct Time t2) {
+    struct Time diff;
+
+    // Convert both times to seconds
+    int t1Seconds = t1.hours * 3600 + t1.minutes * 60 + t1.seconds;
+    int t2Seconds = t2.hours * 3600 + t2.minutes * 60 + t2.seconds;
+
+    int secondsDiff = t2Seconds - t1Seconds;
+
+    // Calculate the difference in hours, minutes, and seconds
+    diff.hours = secondsDiff / 3600;
+    secondsDiff %= 3600;
+    diff.minutes = secondsDiff / 60;
+    diff.seconds = secondsDiff % 60;
+
+    return diff;
 }
