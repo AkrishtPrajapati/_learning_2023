@@ -1,36 +1,36 @@
 #include <stdio.h>
-#include <ctype.h>
 
-void toggle_case(char* string) {
-  for (int i = 0; string[i] != '\0'; i++) {
-    if (isupper(string[i])) {
-      string[i] = tolower(string[i]);
-    } else if (islower(string[i])) {
-      string[i] = toupper(string[i]);
-    }
-  }
+struct Box {
+    float length;
+    float width;
+    float height;
+};
+
+float calculateVolume(struct Box* boxPtr) {
+    return boxPtr->length * boxPtr->width * boxPtr->height;
+}
+
+float calculateSurfaceArea(struct Box* boxPtr) {
+    return 2 * (boxPtr->length * boxPtr->width + boxPtr->length * boxPtr->height + boxPtr->width * boxPtr->height);
 }
 
 int main() {
-  char string[] = "Hello World";
-  toggle_case(string);
-  printf("Output 1: %s\n", string);
+    struct Box box;
+    struct Box* boxPtr = &box;
 
-  char string2[] = "Hello World";
-  toggle_case(string2);
-  printf("Output 2: %s\n", string2);
+    printf("Enter the dimensions of the box:\n");
+    printf("Length: ");
+    scanf("%f", &(boxPtr->length));
+    printf("Width: ");
+    scanf("%f", &(boxPtr->width));
+    printf("Height: ");
+    scanf("%f", &(boxPtr->height));
 
-  char string3[] = "a+B";
-  toggle_case(string3);
-  printf("Output 3: %s\n", string3);
+    float volume = calculateVolume(boxPtr);
+    float surfaceArea = calculateSurfaceArea(boxPtr);
 
-  char string4[] = "A+B";
-  toggle_case(string4);
-  printf("Output 4: %s\n", string4);
+    printf("\nVolume of the box: %.2f\n", volume);
+    printf("Total surface area of the box: %.2f\n", surfaceArea);
 
-  char string5[] = "Prog4u";
-  toggle_case(string5);
-  printf("Output 5: %s\n", string5);
-
-  return 0;
+    return 0;
 }
